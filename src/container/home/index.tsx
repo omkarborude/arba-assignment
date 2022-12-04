@@ -22,7 +22,7 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     Dispatch(getProductsData());
-  }, [Dispatch]);
+  }, []);
 
   useEffect(() => {
     const loToken = JSON.parse(localStorage.getItem("termTone") as string);
@@ -30,6 +30,8 @@ export const Home: React.FC = () => {
       seToggleModal(true);
     }
   }, []);
+
+  console.log(products)
 
   return (
     <div className="bg-white">

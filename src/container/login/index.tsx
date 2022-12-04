@@ -9,12 +9,13 @@ export const Main: React.FC = () => {
   const Dispatch = useDispatch();
   const router = useRouter();
 
+
   const products = useSelector((state: RootStateOrAny) => state?.products);
   const auth = useSelector((state: RootStateOrAny) => state?.auth);
 
   useEffect(() => {
     Dispatch(getProductsData());
-  }, [Dispatch]);
+  }, [getProductsData]);
 
   const onClick = () => {
     const data = {
@@ -22,15 +23,19 @@ export const Main: React.FC = () => {
       password: "0lelplR",
     };
     Dispatch(loginUser(data));
+    router.push('/home')
   };
 
   useEffect(() => {
-    if (auth.status == "succeeded") {
-      router.push("/home");
+    const AuthToken =  JSON.parse(localStorage?.getItem('authToken') as string)
+    if(!AuthToken){
+      router.push('/')
+    }else{
+      router.push('/home')
     }
-  }, [auth]);
+  }, []);
 
-  console.log(auth.status);
+
   return (
     <>
       <Login

@@ -17,13 +17,13 @@ const initialState = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            
             username:username,
             password: password
             // expiresInMins: 60, // optional
           })
         })
         if (response.status == 200) {
+          localStorage.setItem("authToken", JSON.stringify({ login: "True" }));
           return response.json();;
         }
       } catch (error) {
@@ -35,18 +35,6 @@ const initialState = {
   export const auth = createSlice({
       name: "auth",
       initialState,
-      extraReducers: {
-          [loginUser.fulfilled.toString()]: (state, action) => {
-              state.status = "succeeded";
-              state.user = action.payload;
-          },
-          [loginUser.rejected.toString()]: (state) => {
-              state.status = "failed";
-          },
-          [loginUser.pending.toString()]: (state) => {
-              state.status = "loading";
-          },
-      },
       reducers: {}
   });
 
