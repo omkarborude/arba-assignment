@@ -1,7 +1,7 @@
 import {Home} from "../../src/container/home";
 
-const InvoiceUploadPage = () => {
+const HomePage = () => {
   return <Home />;
 };
 
-export default InvoiceUploadPage;
+export default HomePage;
