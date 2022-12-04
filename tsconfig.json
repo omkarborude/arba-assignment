@@ -50,7 +50,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/components/carousel/index.jsx"  ],
   "exclude": [
     "node_modules"
   ]
