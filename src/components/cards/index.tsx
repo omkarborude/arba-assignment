@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
-import {  useDispatch, useSelector } from "react-redux";
+import {  RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { cardProp, product } from "@redux/types";
 import { addToCart, decrement, increament } from "@redux/reducer/cart/index";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ export const Cards = (props: cardProp) => {
     <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
       {isCart ? (
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-          {cart.length > 0 ? "Cart" : "Empty"}
+          {cart.length > 0 ? "My Cart" : "Empty"}
         </h2>
       ) : (
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">

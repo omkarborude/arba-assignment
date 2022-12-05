@@ -16,15 +16,11 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     }
   }, []);
 
-  const navbarOpen = () => {
-    
-  }
-
   return (
     <Provider store={store}>
 
       <div className="h-screen w-full">
-      <Header navbarOpen={navbarOpen}/>
+     <Header />
       <Component {...pageProps} />
     </div>
     </Provider>

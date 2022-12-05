@@ -50,7 +50,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/components/carousel/index.jsx"  ],
+, "src/components/carousel/index.jsx", "src/redux/reducer/Auth/index.jtsx", "src/redux/reducer/Auth/index.jsx", "src/redux/reducer/cart/index.jsx"  ],
   "exclude": [
     "node_modules"
   ]

@@ -1,22 +1,33 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, RootStateOrAny } from "react-redux";
 import { cartTotalSelector } from "../../redux/utils";
-const navigation = [{ name: "Dashboard",  current: true }];
+const navigation = [{ name: "Dashboard", current: true }];
 
 const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
 };
 
-export const Header = (props: { navbarOpen: Function }) => {
+export const Header = () => {
   const total = useSelector(cartTotalSelector);
   const router = useRouter();
-
+  const auth = useSelector((state: RootStateOrAny) => state.auth);
+   const [usAuth , setAuth] = useState<boolean>(false)
   const signOut = () => {
-    localStorage?.removeItem('authToken');
-    router.push('/login')
-  }
+    localStorage?.removeItem("authToken");
+    router.push("/login");
+  };
+
+
+  useEffect(() => {
+    const AuthToken =  JSON.parse(localStorage?.getItem('authToken') as string)
+    if(AuthToken){
+      setAuth(true)
+    }else{
+      setAuth(false)
+    }
+  }, [])
 
   return (
     <Disclosure as="nav" className="bg-gray-50">
@@ -31,20 +42,21 @@ export const Header = (props: { navbarOpen: Function }) => {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div 
-                 onClick={() => {
-                  router.push("/home");
-                }}
-                className="flex flex-shrink-0 items-center">
+                <div
+                  onClick={() => {
+                    router.push("/home");
+                  }}
+                  className="flex flex-shrink-0 items-center"
+                >
                   <h1 className="text-lg font-bold">ArBa</h1>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
-                      onClick={() => {
-                        router.push("/home");
-                      }}
+                        onClick={() => {
+                          router.push("/home");
+                        }}
                         key={item.name}
                         className={classNames(
                           item.current
@@ -60,77 +72,81 @@ export const Header = (props: { navbarOpen: Function }) => {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <div>
-                  <a 
-                  onClick={() => {
-                    router.push("/cart");
-                  }}
-                  role="button" className="relative flex">
-                    <svg
-                      className="flex-1 w-8 h-8 fill-current"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z" />
-                    </svg>
-                    <span className="absolute right-0 top-0 rounded-full bg-red-600 w-4 h-4 top right p-0 m-0 text-white font-mono text-sm  leading-tight text-center">
-                      {total}
-                    </span>
-                  </a>
-                </div>
-                {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
+              {(auth.user?.id || usAuth) && (
+                <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <div>
-                    <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
-                    </Menu.Button>
+                    <a
+                      onClick={() => {
+                        router.push("/cart");
+                      }}
+                      role="button"
+                      className="relative flex"
+                    >
+                      <svg
+                        className="flex-1 w-8 h-8 fill-current"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z" />
+                      </svg>
+                      <span className="absolute right-0 top-0 rounded-full bg-red-600 w-4 h-4 top right p-0 m-0 text-white font-mono text-sm  leading-tight text-center">
+                        {total}
+                      </span>
+                    </a>
                   </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Your Profile
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                            onClick={signOut}
-                          >
-                            Sign out
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              </div>
+                  {/* Profile dropdown */}
+                  <Menu as="div" className="relative ml-3">
+                    <div>
+                      <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <span className="sr-only">Open user menu</span>
+                        <img
+                          className="h-8 w-8 rounded-full"
+                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                          alt=""
+                        />
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              href="#"
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
+                            >
+                              Your Profile
+                            </a>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              href="#"
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
+                              onClick={signOut}
+                            >
+                              Sign out
+                            </a>
+                          )}
+                        </Menu.Item>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                </div>
+              )}
             </div>
           </div>
 
