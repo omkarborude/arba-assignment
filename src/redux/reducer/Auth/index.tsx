@@ -1,14 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {FETCH_PRODUCTS} from "../../../Constant/index"
+import {FETCH_USER} from "../../../Constant/index"
 const initialState = {
-    user: {},
-    status: "",
   };
 
   const url = 'https://dummyjson.com/auth/login'
 
   export const loginUser = createAsyncThunk(
-    FETCH_PRODUCTS,
+    FETCH_USER,
     async (data:{username:string,password:string}) => {
       const {username, password} = data;
      
@@ -24,7 +22,6 @@ const initialState = {
         })
         if (response.status == 200) {
           localStorage.setItem("authToken", JSON.stringify({ login: "True" }));
-          return response.json();;
         }
       } catch (error) {
         return Promise.reject(error);

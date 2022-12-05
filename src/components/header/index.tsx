@@ -1,12 +1,8 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  BellIcon,
-  XMarkIcon,
-  ShoppingBagIcon,
-} from "@heroicons/react/24/outline";
-
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { cartTotalSelector } from "../../redux/utils";
 const navigation = [{ name: "Dashboard", href: "#", current: true }];
 
 const classNames = (...classes: string[]) => {
@@ -14,6 +10,14 @@ const classNames = (...classes: string[]) => {
 };
 
 export const Header = (props: { navbarOpen: Function }) => {
+  const total = useSelector(cartTotalSelector);
+  const router = useRouter();
+
+  const signOut = () => {
+    localStorage?.removeItem('authToken');
+    router.push('/login')
+  }
+
   return (
     <Disclosure as="nav" className="bg-gray-50">
       {({ open }: any) => (
@@ -24,14 +28,11 @@ export const Header = (props: { navbarOpen: Function }) => {
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
-                  
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <h1 className="text-lg font-bold">
-                    ArBa
-                  </h1>
+                  <h1 className="text-lg font-bold">ArBa</h1>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -63,7 +64,7 @@ export const Header = (props: { navbarOpen: Function }) => {
                       <path d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z" />
                     </svg>
                     <span className="absolute right-0 top-0 rounded-full bg-red-600 w-4 h-4 top right p-0 m-0 text-white font-mono text-sm  leading-tight text-center">
-                      5
+                      {total}
                     </span>
                   </a>
                 </div>
@@ -110,19 +111,7 @@ export const Header = (props: { navbarOpen: Function }) => {
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
-                          >
-                            Settings
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
+                            onClick={signOut}
                           >
                             Sign out
                           </a>
