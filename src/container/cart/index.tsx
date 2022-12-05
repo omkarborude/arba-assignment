@@ -31,8 +31,6 @@ export const Cart: React.FC = () => {
     }
   }, []);
 
-  console.log(cart)
-
   return (
     <div className="bg-white">
       <Cards products={cart} isCart={true}/>
