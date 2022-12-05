@@ -1,23 +1,28 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
-import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import data from "@public/meta.json";
+import {  useDispatch, useSelector } from "react-redux";
 import { cardProp, product } from "@redux/types";
 import { addToCart, decrement, increament } from "@redux/reducer/cart/index";
 import { useRouter } from "next/router";
 
 export const Cards = (props: cardProp) => {
   const { products, isCart } = props;
-  const cart = useSelector((state: any) => state.cart);
+  const cart = useSelector((state: RootStateOrAny) => state.cart);
   const router = useRouter();
   const dispatch = useDispatch();
 
-
   return (
     <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-      <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-        Customers also purchased
-      </h2>
-      <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+      {isCart ? (
+        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+          {cart.length > 0 ? "Cart" : "Empty"}
+        </h2>
+      ) : (
+        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+          Customers also purchased
+        </h2>
+      )}
+
+      <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-4">
         {products?.map((item: product) => (
           <div className="card flex flex-col rounded overflow-hidden shadow-lg">
             <img

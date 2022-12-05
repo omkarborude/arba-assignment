@@ -17,7 +17,6 @@ const initialState = {
           body: JSON.stringify({
             username:username,
             password: password
-            // expiresInMins: 60, // optional
           })
         })
         if (response.status == 200) {
