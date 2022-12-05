@@ -5,9 +5,9 @@ import { getProductsData } from "@redux/reducer/products/index";
 
 import { Modal } from "@components/modal";
 
-export const Home: React.FC = () => {
+export const Cart: React.FC = () => {
   const Dispatch = useDispatch();
-  const products = useSelector((state: any) => state?.products);
+  const cart = useSelector((state:any) => state.cart);
 
   const [toggleModal, seToggleModal] = useState<boolean>(false);
 
@@ -31,14 +31,13 @@ export const Home: React.FC = () => {
     }
   }, []);
 
+  console.log(cart)
+
   return (
     <div className="bg-white">
-      <Cards products={products.products} />
-      <Modal
-        enable={toggleModal}
-        setShowModal={setShowModal}
-        onAccept={onAccept}
-      />
+      <Cards products={cart} isCart={true}/>
     </div>
   );
 };
+
+

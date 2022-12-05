@@ -9,10 +9,6 @@ export const Main: React.FC = () => {
   const Dispatch = useDispatch();
   const router = useRouter();
 
-
-  const products = useSelector((state: RootStateOrAny) => state?.products);
-  const auth = useSelector((state: RootStateOrAny) => state?.auth);
-
   useEffect(() => {
     Dispatch(getProductsData());
   }, [getProductsData]);
